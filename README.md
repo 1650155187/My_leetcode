@@ -1,34 +1,71 @@
-# My_leetcode
+#include <iostream>
+#include <vector>
+using namespace std;
 
-    string ReassembleData(const vector<Package> &records, int packageType)
+class TenderSystem {
+public:
+    TenderSystem() {}
+    vector<vector<int>> vec;
+
+    void AddTender(int userId, int projectId, int price)
     {
-        set<Package, Comp> setPackages;
-        for (int i = 0; i < records.size(); i++) {
-            if (records[i].fragType == packageType) {
-                if (records[i].data.length() == records[i].length) {
-                    setPackages.insert(records[i]);
+        for (auto &element : vec) {
+            if (element[0] == userId && element[1] == projectId) {
+                return;
+            }
+        }
+        vector<int> temp;
+        temp.push_back(userId);
+        temp.push_back(projectId);
+        temp.push_back(price);
+        vec.push_back(temp);
+    }
+
+    int UpdateTender(int userId, int projectId, int price)
+    {
+        for (int i = 0; i < vec.size(); i++) {
+            if (vec[i][0] == userId && vec[i][1] == projectId) {
+                vec.erase(vec.begin() + i);
+                vector<int> temp;
+                temp.push_back(userId);
+                temp.push_back(projectId);
+                temp.push_back(price);
+                vec.push_back(temp);
+                return vec[i][2];
+            }
+        }
+        return -1;
+    }
+
+    int RemoveTender(int userId, int projectId)
+    {
+        for (int i = 0; i < vec.size(); i++) {
+            if (vec[i][0] == userId && vec[i][1] == projectId) {
+                vec.erase(vec.begin() + i);
+                return vec[i][2];
+            }
+        }
+        return -1;
+    }
+
+    int QueryTender(int projectId, int price)
+    {
+        int minPrice = INT_MAX;
+        int ret;
+        for (auto &element : vec) {
+            if (element[1] == projectId && element[2] > price) {
+                if (element[2] < minPrice) {
+                    minPrice = element[2];
+                    ret = element[0];
                 }
             }
         }
-
-        auto first = setPackages.begin();
-        auto last = setPackages.rbegin();
-        if ((setPackages.empty()) || (!last->finish) || (first->fragOffset + setPackages.size() - 1 != last->fragOffset)) {
-            return "NA";
-        }
-        string result;
-        for (auto ptr = setPackages.begin(); ptr != setPackages.end(); ptr++) {
-            result += ptr->data;
-        }
-
-        return result;
+        return ret;
     }
+};
 
-    int main()
-    {
-        Solution obj;
-        vector<Package> records = {{9, 1, 1, 5, "world"}, {9, 0, 0, 5, "hello"}};
-        int packageType = 9;
-        cout << obj.ReassembleData(records, packageType) << endl;
-        return 0;
-    }
+int main(int argc, const char *argv[])
+{
+    std::cout << "Hello World" << std::endl;
+    return 0;
+}
