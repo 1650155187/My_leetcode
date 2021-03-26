@@ -111,12 +111,10 @@ public:
 					}
 				}
 			} else {
+				if (ret.size() > 0 && i > last) ret.append(1, ' ');
 				for (int j = last; j < i; j ++) {
 					ret.append(1, sentence[j]);
-				}
-				if (i != len && i > last) {
-					ret.append(1, sentence[i]);
-				}
+				}			
 				last = i + 1;
 				ptr = root;
 				failed = false;
