@@ -46,23 +46,29 @@ public:
 	 				if ((j == size - 1) || (ironp[j].y != ironp[j + 1].y)) {
 	 					int y = ironp[j].y;
 	 					bool covered = (y >= obstacle[1] && y <= obstacle[3]);
-	 					if (dir == 'U') {
-	 						int x = 0;
-		 					for (int i = k; i <= j; i ++) {
-		 						if (covered && (x >= obstacle[0] && x <= obstacle[2])) {
-		 							x = obstacle[2] + 1;
+	 					int up = 0;
+	 					int down = 0;
+	 					for (int i = k; i <= j; i ++) {
+	 						if (covered) {
+		 						if (ironp[i].x < obstacle[0]) {
+		 							up ++;
+		 							if (dir == 'U')
+		 								ironp[i].x = up - 1;
+		 							else
+		 								ironp[i].x = obstacle[0] - up;
+		 						} else {
+		 							down ++;
+		 							if (dir == 'U')
+		 								ironp[i].x = obstacle[2] + down;
+		 							else
+		 								ironp[i].x = rowCount - down;
 		 						}
-		 						ironp[i].x = x;
-		 						x ++;
-		 					}
-	 					} else {
-	 						int x = rowCount - 1;
-		 					for (int i = k; i <= j; i ++) {
-		 						if (covered && (x >= obstacle[0] && x <= obstacle[2])) {
-		 							x = obstacle[0] - 1;
-		 						}
-		 						ironp[i].x = x;
-		 						x --;
+		 					} else {
+		 						up ++;
+		 						if (dir == 'U')
+	 								ironp[i].x = up - 1;
+	 							else
+	 								ironp[i].x = rowCount - up;
 		 					}
 	 					}
 	 					k = j + 1;
@@ -75,23 +81,29 @@ public:
 	 				if ((j == size - 1) || (ironp[j].x != ironp[j + 1].x)) {
 	 					int x = ironp[j].x;
 	 					bool covered = (x >= obstacle[0] && x <= obstacle[2]);
-	 					if (dir == 'L') {
-	 						int y = 0;
-		 					for (int i = k; i <= j; i ++) {
-		 						if (covered && (y >= obstacle[1] && y <= obstacle[3])) {
-		 							y = obstacle[3] + 1;
+	 					int left = 0;
+	 					int right = 0;
+	 					for (int i = k; i <= j; i ++) {
+	 						if (covered) {
+		 						if (ironp[i].y < obstacle[1]) {
+		 							left ++;
+		 							if (dir == 'L')
+		 								ironp[i].y = left - 1;
+		 							else
+		 								ironp[i].y = obstacle[1] - left;
+		 						} else {
+		 							right ++;
+		 							if (dir == 'L')
+		 								ironp[i].y = obstacle[3] + right;
+		 							else
+		 								ironp[i].y = colCount - right;
 		 						}
-		 						ironp[i].y = y;
-		 						y ++;
-		 					}
-	 					} else {
-	 						int y = colCount - 1;
-		 					for (int i = k; i <= j; i ++) {
-		 						if (covered && (y >= obstacle[1] && y <= obstacle[3])) {
-		 							y = obstacle[1] - 1;
-		 						}
-		 						ironp[i].y = y;
-		 						y --;
+		 					} else {
+		 						left ++;
+		 						if (dir == 'L')
+	 								ironp[i].y = left - 1;
+	 							else
+	 								ironp[i].y = colCount - left;
 		 					}
 	 					}
 	 					k = j + 1;
